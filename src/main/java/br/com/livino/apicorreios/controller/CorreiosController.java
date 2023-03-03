@@ -1,19 +1,29 @@
 package br.com.livino.apicorreios.controller;
 
+
+import br.com.livino.apicorreios.exception.NoContentException;
+import br.com.livino.apicorreios.exception.NotReadyException;
 import br.com.livino.apicorreios.model.Address;
-import jakarta.websocket.server.PathParam;
+import br.com.livino.apicorreios.service.CorreiosService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+
 
 @RestController
 public class CorreiosController {
-    @GetMapping("/status")
-    public String getStatus(){
-        return "UP";
+    @Autowired
+    private CorreiosService service;
+
+    @GetMapping("status")
+    public String get() {
+        return "Correios Service is " + service.getStatus();
     }
 
-    @GetMapping("/zipcode/{zipcode}")
-    public Address getAdressByZipCode(@PathParam("zipcode") String zipcode){
-        return Address.builder().zipCode(zipcode).build();
+    @GetMapping("zip/{zipcode}")
+    public Address getByZipcode(
+            @PathVariable("zipcode") String zipcode) throws NotReadyException, NoContentException {
+        return this.service.getByZipcode(zipcode);
     }
 }
