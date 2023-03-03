@@ -21,9 +21,9 @@ public class CorreiosController {
         return "Correios Service is " + service.getStatus();
     }
 
-    @GetMapping("zip/{zipcode}")
+    @GetMapping("zipcode/{zipcode}")
     public Address getByZipcode(
             @PathVariable("zipcode") String zipcode) throws NotReadyException, NoContentException {
-        return this.service.getByZipcode(zipcode);
+        return this.service.getAddressByZipcode(zipcode);
     }
 }
